@@ -48,4 +48,4 @@ lunch twrp-alioth_eng && mka adbd bootimage
 
 ## Credits
 - [Original Tree By Nebrassy](https://github.com/TeamWin/android_device_xiaomi_alioth)
-- [Immensity kernel](https://github.com/UtsavBalar1231/kernel_xiaomi_sm8250.git)
+- [Immensity kernel](https://github.com/PixelPlusUI-Devices/kernel_xiaomi_alioth.git)
