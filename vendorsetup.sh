@@ -1,6 +1,6 @@
 #
 #	This file is part of the OrangeFox Recovery Project
-# 	Copyright (C) 2021-2022 The OrangeFox Recovery Project
+# 	Copyright (C) 2021-2023 The OrangeFox Recovery Project
 #
 #	OrangeFox is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ if [ -z "$1" -a -z "$FOX_BUILD_DEVICE" ]; then
 fi
 
 if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
-	export FOX_VARIANT="A12"
 	export OF_USE_GREEN_LED=0
         export FOX_ENABLE_APP_MANAGER=1
         export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
