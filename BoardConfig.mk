@@ -1,7 +1,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright (C) 2022 The OrangeFox Recovery Project
+# Copyright (C) 2022-2023 The OrangeFox Recovery Project
 #
 
 DEVICE_PATH := device/xiaomi/alioth
@@ -155,4 +155,21 @@ TARGET_USES_MKE2FS := true
 TW_NO_SCREEN_BLANK := true
 TW_EXCLUDE_APEX := true
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
+#
+
+# vendor_boot as recovery?
+ifeq ($(OF_VENDOR_BOOT_RECOVERY),1)
+  BOARD_BOOT_HEADER_VERSION := 4
+  BOARD_USES_RECOVERY_AS_BOOT := false
+  BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
+  BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+  BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := false
+  BOARD_USES_GENERIC_KERNEL_IMAGE := true
+  BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
+
+  BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtbs
+  BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+  BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(VENDOR_CMDLINE)
+endif
 #

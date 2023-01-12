@@ -1,7 +1,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright (C) 2022 The OrangeFox Recovery Project
+# Copyright (C) 2022-2023 The OrangeFox Recovery Project
 #
 
 DEVICE_PATH := device/xiaomi/alioth
@@ -20,6 +20,21 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+
+# vendor_boot as recovery
+ifeq ($(OF_VENDOR_BOOT_RECOVERY),1)
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/recovery/root/fstab.qcom:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+
+PRODUCT_PACKAGES += \
+    linker.vendor_ramdisk \
+    resize2fs.vendor_ramdisk \
+    tune2fs.vendor_ramdisk
+endif
+# end: vendor_boot
 
 # API
 PRODUCT_TARGET_VNDK_VERSION := 31
@@ -53,7 +68,7 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_PATH_system=system/bin/otapreopt_script \
     FILESYSTEM_TYPE_system=ext4 \
     POSTINSTALL_OPTIONAL_system=true
-    
+
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.1-impl-qti \
     android.hardware.boot@1.1-impl-qti.recovery \
