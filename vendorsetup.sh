@@ -78,6 +78,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 
 	# no special MIUI stuff
         export OF_VANILLA_BUILD=1
+        export OF_DISABLE_OTA_MENU=1
 
 	# full size
 	export OF_DYNAMIC_FULL_SIZE=9126805504
