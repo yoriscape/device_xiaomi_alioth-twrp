@@ -17,7 +17,7 @@
 #
 # 	Please maintain this if you use this script or any part of it
 #
-FDEVICE="alioth"
+FDEVICE="kona"
 
 fox_get_target_device() {
 local chkdev=$(echo "$BASH_SOURCE" | grep -w \"$FDEVICE\")
@@ -35,13 +35,11 @@ fi
 
 if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	export OF_USE_GREEN_LED=0
-        export FOX_ENABLE_APP_MANAGER=1
-        export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
+    export FOX_ENABLE_APP_MANAGER=1
+    export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
    	export TW_DEFAULT_LANGUAGE="en"
 	export LC_ALL="C"
  	export ALLOW_MISSING_DEPENDENCIES=true
-	export TARGET_DEVICE_ALT="aliothin"
-	export OF_TARGET_DEVICES="aliothin,alioth"
 	export OF_VIRTUAL_AB_DEVICE=1
 	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
 	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
@@ -55,9 +53,18 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	export FOX_USE_XZ_UTILS=1
 	export OF_ENABLE_LPTOOLS=1
 	export FOX_USE_NANO_EDITOR=1
-        export OF_QUICK_BACKUP_LIST="/boot;/data;"
-        export FOX_DELETE_AROMAFM=1
-        export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
+    export OF_QUICK_BACKUP_LIST="/boot;/data;"
+    export FOX_DELETE_AROMAFM=1
+    export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
+
+    # Device Specific Props
+    if [ $PRODUCT_DEVICE=alioth ]; then
+    export TARGET_DEVICE_ALT="aliothin"
+    export OF_TARGET_DEVICES="aliothin,alioth"
+    fi
+    if [ $PRODUCT_DEVICE=munch ]; then
+    export OF_TARGET_DEVICES="munch"
+    fi
 
 	# screen settings
 	export OF_SCREEN_H=2400
