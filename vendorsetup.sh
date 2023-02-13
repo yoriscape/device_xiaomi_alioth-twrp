@@ -17,8 +17,14 @@
 #
 # 	Please maintain this if you use this script or any part of it
 #
-FDEVICE="kona"
+FDEVICE="mikona"
+FDEVICE1="alioth"
+FDEVICE2="munch"
+FDEVICE3="thyme"
+FDEVICE4="psyche"
+THIS_DEVICE=${BASH_ARGV[2]}
 
+#set -o xtrace
 fox_get_target_device() {
 local chkdev=$(echo "$BASH_SOURCE" | grep -w \"$FDEVICE\")
    if [ -n "$chkdev" ]; then 
@@ -29,14 +35,23 @@ local chkdev=$(echo "$BASH_SOURCE" | grep -w \"$FDEVICE\")
    fi
 }
 
-if [ -z "$1" -a -z "$FOX_BUILD_DEVICE" ]; then
+if [ -z "$FOX_BUILD_DEVICE" ]; then
+   echo "ERROR! First run 'export FOX_BUILD_DEVICE=alioth' or 'export FOX_BUILD_DEVICE=munch' and then build again."
+fi
+
+if [ "$THIS_DEVICE" = "alioth" -o "$THIS_DEVICE" = "munch" ]; then
+	FDEVICE="$THIS_DEVICE"
+	[ -z "$FOX_BUILD_DEVICE" ] && FOX_BUILD_DEVICE="$THIS_DEVICE"
+fi
+
+if [ -z "$1" -a -z "$FOX_BUILD_DEVICE" -a -z "$FDEVICE" ]; then
    fox_get_target_device
 fi
 
-if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
+if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE1"  -o "$FOX_BUILD_DEVICE" = "$FDEVICE2" ]; then
 	export OF_USE_GREEN_LED=0
-    export FOX_ENABLE_APP_MANAGER=1
-    export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
+    	export FOX_ENABLE_APP_MANAGER=1
+    	export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
    	export TW_DEFAULT_LANGUAGE="en"
 	export LC_ALL="C"
  	export ALLOW_MISSING_DEPENDENCIES=true
@@ -53,18 +68,17 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	export FOX_USE_XZ_UTILS=1
 	export OF_ENABLE_LPTOOLS=1
 	export FOX_USE_NANO_EDITOR=1
-    export OF_QUICK_BACKUP_LIST="/boot;/data;"
-    export FOX_DELETE_AROMAFM=1
-    export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
+    	export OF_QUICK_BACKUP_LIST="/boot;/data;"
+    	export FOX_DELETE_AROMAFM=1
+    	export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
 
-    # Device Specific Props
-    if [ $PRODUCT_DEVICE=alioth ]; then
-    export TARGET_DEVICE_ALT="aliothin"
-    export OF_TARGET_DEVICES="aliothin,alioth"
-    fi
-    if [ $PRODUCT_DEVICE=munch ]; then
-    export OF_TARGET_DEVICES="munch"
-    fi
+    	# Device Specific Props
+ 	if [ "$FOX_BUILD_DEVICE" = "$FDEVICE2" -o  "$FDEVICE" = "$FDEVICE2" ]; then
+    	   echo "Device is $FDEVICE2 ..."
+ 	else
+    	   echo "Device is alioth ..."
+	   export TARGET_DEVICE_ALT="aliothin"
+ 	fi
 
 	# screen settings
 	export OF_SCREEN_H=2400
@@ -73,9 +87,6 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
 	export OF_STATUS_INDENT_RIGHT=48
   	export OF_HIDE_NOTCH=1
 	export OF_CLOCK_POS=1
-
-	# maximum permissible splash image size (in kilobytes)
-	#export OF_SPLASH_MAX_SIZE=2048
 
 	# ensure that /sdcard is bind-unmounted before f2fs data repair or format
 	export OF_UNBIND_SDCARD_F2FS=1
