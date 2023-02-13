@@ -4,7 +4,7 @@
 # Copyright (C) 2022-2023 The OrangeFox Recovery Project
 #
 
-DEVICE_PATH := device/xiaomi/kona
+DEVICE_PATH := device/xiaomi/mikona
 
 # fscrypt policy
 TW_USE_FSCRYPT_POLICY := 2
@@ -73,8 +73,8 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.1-impl-qti \
     android.hardware.boot@1.1-impl-qti.recovery \
     android.hardware.boot@1.1-service \
-    bootctrl.kona \
-    bootctrl.kona.recovery
+    bootctrl.mikona \
+    bootctrl.mikona.recovery
 	
 PRODUCT_PACKAGES_DEBUG += \
     bootctl	
@@ -136,4 +136,8 @@ RECOVERY_LIBRARY_SOURCE_FILES += \
 # OEM otacert
 PRODUCT_EXTRA_RECOVERY_KEYS += \
     vendor/recovery/security/miui
+
+# device name
+#PRODUCT_PROPERTY_OVERRIDES += \
+#	ro.product.device=$(PRODUCT_RELEASE_NAME)
 #

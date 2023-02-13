@@ -4,7 +4,7 @@
 # Copyright (C) 2022-2023 The OrangeFox Recovery Project
 #
 
-DEVICE_PATH := device/xiaomi/kona
+DEVICE_PATH := device/xiaomi/mikona
 
 # Architecture
 TARGET_ARCH := arm64
@@ -26,12 +26,12 @@ TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_IS_64_BIT := true
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := kona
+TARGET_BOOTLOADER_BOARD_NAME := mikona
 TARGET_NO_BOOTLOADER := true
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
-TARGET_BOARD_PLATFORM := kona
+TARGET_BOARD_PLATFORM := mikona
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno650
 BOARD_VENDOR := xiaomi
 
@@ -69,6 +69,26 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
+
+# Kernel
+# whether to do an inline build of the kernel sources
+ifeq ($(FOX_BUILD_FULL_KERNEL_SOURCES),1)
+    TARGET_KERNEL_SOURCE := kernel/xiaomi/$(PRODUCT_RELEASE_NAME)
+    TARGET_KERNEL_CONFIG := vendor/$(PRODUCT_RELEASE_NAME)-fox_defconfig
+    TARGET_KERNEL_CLANG_COMPILE := true
+    KERNEL_SUPPORTS_LLVM_TOOLS := true
+    TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-gnu-
+    # clang-r383902 = 11.0.1; clang-r416183b = 12.0.5; clang-r416183b1 = 12.0.7;
+    # clang_13.0.0 (proton-clang 13.0.0, symlinked into prebuilts/clang/host/linux-x86/clang_13.0.0); clang-13+ is needed for Arrow-12.1 kernel sources
+    TARGET_KERNEL_CLANG_VERSION := 13.0.0
+    TARGET_KERNEL_CLANG_PATH := $(shell pwd)/prebuilts/clang/host/linux-x86/clang-$(TARGET_KERNEL_CLANG_VERSION)
+    TARGET_KERNEL_ADDITIONAL_FLAGS := DTC_EXT=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/dtc/dtc
+else
+    KERNEL_PATH := $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)
+    TARGET_PREBUILT_KERNEL := $(KERNEL_PATH)/Image.gz-dtb
+    BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
+endif
+#
 
 # 12.1 manifest requirements
 TARGET_SUPPORTS_64_BIT_APPS := true
@@ -133,7 +153,16 @@ TARGET_USES_MKE2FS := true
 TW_NO_SCREEN_BLANK := true
 TW_EXCLUDE_APEX := true
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
-#
+
+# unified script
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)/unified-script.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/unified-script.sh
+
+# asserts
+ifeq ($(PRODUCT_RELEASE_NAME),munch)
+   TARGET_OTA_ASSERT_DEVICE := munch
+else
+   TARGET_OTA_ASSERT_DEVICE := alioth,aliothin
+endif
 
 # vendor_boot as recovery?
 ifeq ($(OF_VENDOR_BOOT_RECOVERY),1)
