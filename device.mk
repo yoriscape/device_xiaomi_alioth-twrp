@@ -35,6 +35,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     linker.vendor_ramdisk \
     resize2fs.vendor_ramdisk \
+    fsck.vendor_ramdisk \
     tune2fs.vendor_ramdisk
 endif
 # end: vendor_boot
