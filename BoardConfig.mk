@@ -154,6 +154,9 @@ TW_NO_SCREEN_BLANK := true
 TW_EXCLUDE_APEX := true
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
 
+# enable python
+TW_INCLUDE_PYTHON := true
+
 # unified script
 PRODUCT_COPY_FILES += $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)/unified-script.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/unified-script.sh
 
