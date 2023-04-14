@@ -101,6 +101,12 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE
 	# full size
 	export OF_DYNAMIC_FULL_SIZE=9126805504
 
+	# vendor_boot-as-recovery
+	if [ "$OF_VENDOR_BOOT_RECOVERY" = "1" ]; then
+	   export FOX_RESET_SETTINGS="disabled"
+	   export FOX_VARIANT="vBaR"
+	fi
+
 	# let's see what are our build VARs
 	if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
   	   export | grep "FOX" >> $FOX_BUILD_LOG_FILE
