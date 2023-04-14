@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Copyright (C) 2022-2023 The OrangeFox Recovery Project
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 
 DEVICE_PATH := device/xiaomi/mikona
@@ -21,7 +22,6 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a55
 TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385
 
-#TARGET_USES_64_BIT_BINDER := true
 TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_IS_64_BIT := true
 
