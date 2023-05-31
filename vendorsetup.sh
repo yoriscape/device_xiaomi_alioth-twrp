@@ -17,6 +17,8 @@
 #
 # 	Please maintain this if you use this script or any part of it
 #
+
+#set -o xtrace
 FDEVICE="mikona"
 FDEVICE1="alioth"
 FDEVICE2="munch"
@@ -24,7 +26,6 @@ FDEVICE3="thyme"
 FDEVICE4="psyche"
 THIS_DEVICE=${BASH_ARGV[2]}
 
-#set -o xtrace
 fox_get_target_device() {
 local chkdev=$(echo "$BASH_SOURCE" | grep -w \"$FDEVICE\")
    if [ -n "$chkdev" ]; then 
@@ -34,10 +35,6 @@ local chkdev=$(echo "$BASH_SOURCE" | grep -w \"$FDEVICE\")
       [ -n "$chkdev" ] && FOX_BUILD_DEVICE="$FDEVICE"
    fi
 }
-
-if [ -z "$FOX_BUILD_DEVICE" ]; then
-   echo "ERROR! First run 'export FOX_BUILD_DEVICE=alioth' or 'export FOX_BUILD_DEVICE=munch' and then build again."
-fi
 
 if [ "$THIS_DEVICE" = "alioth" -o "$THIS_DEVICE" = "munch" ]; then
 	FDEVICE="$THIS_DEVICE"
@@ -49,6 +46,11 @@ if [ -z "$1" -a -z "$FOX_BUILD_DEVICE" -a -z "$FDEVICE" ]; then
 fi
 
 if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE1"  -o "$FOX_BUILD_DEVICE" = "$FDEVICE2" ]; then
+	if [ -z "$THIS_DEVICE" ]; then
+		echo "ERROR! This script requires bash. Run '/bin/bash' and build again."
+		exit 1
+	fi
+
 	export OF_USE_GREEN_LED=0
     	export FOX_ENABLE_APP_MANAGER=1
     	export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
@@ -105,6 +107,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE
 	if [ "$OF_VENDOR_BOOT_RECOVERY" = "1" ]; then
 	   export FOX_RESET_SETTINGS="disabled"
 	   export FOX_VARIANT="vBaR"
+	   #export FOX_USE_LZ4_COMPRESSION=1; # this can cause a bootloop in some ROMs, so don't use it
 	fi
 
 	# let's see what are our build VARs
@@ -114,5 +117,9 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE
    	   export | grep "TARGET_" >> $FOX_BUILD_LOG_FILE
   	   export | grep "TW_" >> $FOX_BUILD_LOG_FILE
  	fi
+else
+	if [ -z "$FOX_BUILD_DEVICE" -a -z "$BASH_SOURCE" ]; then
+		echo "I: This script requires bash. Not processing the $FDEVICE $(basename $0)"
+	fi
 fi
 #
