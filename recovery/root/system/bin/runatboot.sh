@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/sbin/sh
 #
 #	This file is part of the OrangeFox Recovery Project
 # 	Copyright (C) 2019-2023 The OrangeFox Recovery Project
@@ -41,6 +41,18 @@ set_read_write_partitions() {
   done
 }
 
+# check whether the unified-script has been executed
+check_unified_script() {
+local i=$(getprop "ro.product.device");
+  if [ "$i" = "mikona" ]; then
+	# something went wrong - run the unified script manually
+	echo "I:OrangeFox: something is not right. Running the unified-script again" >> /tmp/recovery.log;
+	/system/bin/unified-script.sh;
+  fi
+}
+
+#
 set_read_write_partitions;
+check_unified_script;
 exit 0;
 #
