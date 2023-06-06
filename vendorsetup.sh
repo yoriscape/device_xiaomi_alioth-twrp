@@ -51,26 +51,17 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE
 		exit 1
 	fi
 
-	export OF_USE_GREEN_LED=0
+        export FOX_VANILLA_BUILD=1
     	export FOX_ENABLE_APP_MANAGER=1
-    	export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
-   	export TW_DEFAULT_LANGUAGE="en"
-	export LC_ALL="C"
- 	export ALLOW_MISSING_DEPENDENCIES=true
-	export OF_VIRTUAL_AB_DEVICE=1
+	export FOX_VIRTUAL_AB_DEVICE=1
 	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
 	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
-	export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
-	export OF_DONT_PATCH_ENCRYPTED_DEVICE=1
-	export OF_NO_TREBLE_COMPATIBILITY_CHECK=1
 	export FOX_USE_BASH_SHELL=1
 	export FOX_ASH_IS_BASH=1
 	export FOX_USE_TAR_BINARY=1
 	export FOX_USE_SED_BINARY=1
 	export FOX_USE_XZ_UTILS=1
-	export OF_ENABLE_LPTOOLS=1
 	export FOX_USE_NANO_EDITOR=1
-    	export OF_QUICK_BACKUP_LIST="/boot;/data;"
     	export FOX_DELETE_AROMAFM=1
     	export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
 
@@ -82,41 +73,15 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE
 	   export TARGET_DEVICE_ALT="aliothin"
  	fi
 
-	# screen settings
-	export OF_SCREEN_H=2400
-	export OF_STATUS_H=100
-	export OF_STATUS_INDENT_LEFT=48
-	export OF_STATUS_INDENT_RIGHT=48
-  	export OF_HIDE_NOTCH=1
-	export OF_CLOCK_POS=1
-
-	# ensure that /sdcard is bind-unmounted before f2fs data repair or format
-	export OF_UNBIND_SDCARD_F2FS=1
-
 	# instruct magiskboot v24+ to always patch the vbmeta header when patching the recovery/boot image; do *not* remove!
-        export OF_PATCH_VBMETA_FLAG="1"
-
-	# no special MIUI stuff
-        export OF_VANILLA_BUILD=1
-        export OF_DISABLE_OTA_MENU=1
-
-	# full size
-	export OF_DYNAMIC_FULL_SIZE=9126805504
+        export FOX_PATCH_VBMETA_FLAG="1"
 
 	# vendor_boot-as-recovery
-	if [ "$OF_VENDOR_BOOT_RECOVERY" = "1" ]; then
+	if [ "$FOX_VENDOR_BOOT_RECOVERY" = "1" ]; then
 	   export FOX_RESET_SETTINGS="disabled"
 	   export FOX_VARIANT="vBaR"
-	   #export FOX_USE_LZ4_COMPRESSION=1; # this can cause a bootloop in some ROMs, so don't use it
+	   #export OF_USE_LZ4_COMPRESSION=1; # this can cause a bootloop in some ROMs, so don't use it
 	fi
-
-	# let's see what are our build VARs
-	if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
-  	   export | grep "FOX" >> $FOX_BUILD_LOG_FILE
-  	   export | grep "OF_" >> $FOX_BUILD_LOG_FILE
-   	   export | grep "TARGET_" >> $FOX_BUILD_LOG_FILE
-  	   export | grep "TW_" >> $FOX_BUILD_LOG_FILE
- 	fi
 else
 	if [ -z "$FOX_BUILD_DEVICE" -a -z "$BASH_SOURCE" ]; then
 		echo "I: This script requires bash. Not processing the $FDEVICE $(basename $0)"

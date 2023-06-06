@@ -23,7 +23,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
 
 # vendor_boot as recovery
-ifeq ($(OF_VENDOR_BOOT_RECOVERY),1)
+ifeq ($(FOX_VENDOR_BOOT_RECOVERY),1)
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
 
