@@ -163,7 +163,7 @@ LC_ALL := C
 TW_INCLUDE_PYTHON := true
 
 # unified script
-PRODUCT_COPY_FILES += $(DEVICE_PATH)/prebuilt/$(PRODUCT_RELEASE_NAME)/unified-script.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/unified-script.sh
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/recovery/$(PRODUCT_RELEASE_NAME)/unified-script.sh:$(TARGET_COPY_OUT_RECOVERY)/root/system/bin/unified-script.sh
 
 # asserts
 ifeq ($(PRODUCT_RELEASE_NAME),munch)
