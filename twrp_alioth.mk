@@ -19,6 +19,9 @@ $(call inherit-product-if-exists, $(DEVICE_PATH)/fox_mikona.mk)
 # Inherit some common LineageOS stuff.
 $(call inherit-product, vendor/twrp/config/common.mk)
 
+# Enable project quotas and casefolding for emulated storage without sdcardfs
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
 # Device identifier. This must come after all inclusions.
 PRODUCT_NAME := twrp_$(PRODUCT_RELEASE_NAME)
 PRODUCT_DEVICE := mikona
