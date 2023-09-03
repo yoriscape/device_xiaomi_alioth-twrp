@@ -64,6 +64,7 @@ if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" -o "$FOX_BUILD_DEVICE
 	export FOX_USE_NANO_EDITOR=1
     	export FOX_DELETE_AROMAFM=1
     	export FOX_BUGGED_AOSP_ARB_WORKAROUND="1616300800"; # Sun 21 Mar 04:26:40 GMT 2021
+	export OF_ENABLE_FS_COMPRESSION=1
 
     	# Device Specific Props
  	if [ "$FOX_BUILD_DEVICE" = "$FDEVICE2" -o  "$FDEVICE" = "$FDEVICE2" ]; then
